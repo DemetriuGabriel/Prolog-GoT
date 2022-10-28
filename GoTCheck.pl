@@ -537,3 +537,9 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 	parent(robert_baratheon, X),
 	status(X, alive).
 
+
+%____________________________________________________________
+% DEFINE IF X IS SINGLE OR NOT
+
+is_single(X) :-									% X is single if X is not Y's parent
+   not(parent(X, Y)).
