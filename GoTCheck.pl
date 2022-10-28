@@ -537,9 +537,37 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 	parent(robert_baratheon, X),
 	status(X, alive).
 
+%_____________________________________________________________
+% HOUSES
+
+house_of(X, Y) :-
+	atom_string(X, String_X),
+	house_lastname(String_X, Name, Lastname),
+	string_to_atom(Lastname, Y).
+	
+house_lastname(String, Name, Lastname) :-
+	sub_string(String, Before, _, After, "_"),
+	!,
+	sub_atom(String, 0, Before, _, Name),
+	sub_string(String, _, After, 0, Lastname).
 
 %____________________________________________________________
 % DEFINE IF X IS SINGLE OR NOT
 
 is_single(X) :-									% X is single if X is not Y's parent
    not(parent(X, Y)).
+   
+%____________________________________________________________
+% CHARACTERS
+
+select_house(X, Y) :- (status(B, _), house_of(B, Z)), Z == X,
+	Y = B.
+
+%retorna a lista de cada house 
+list_house(X, Y) :- setof(S, select_house(X, S), W), Y=W.
+
+%_____________________________________________________________
+% POWER OF HOUSE
+
+%IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
+power_of(X, Y) :- setof(S, select_house(X, S), W), Z=W, length(Z, Y).
