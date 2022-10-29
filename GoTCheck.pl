@@ -541,6 +541,46 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 % HOUSES
 
 house_of(X, Y) :-
+	% Exceptions
+	X = unknown_mother_stark,
+    Y = stark,
+    !;
+    X = unknown_mother_targaryen,
+    Y = targaryen,
+    !;
+	X = aegon_V_targaryen,
+    Y = targaryen,
+    !;
+    X = unknown_mother_martell,
+    Y = martell,
+    !;
+	X = mellario_of_norvos,
+    Y = martell,
+    !;
+    X = four_unknown_martells,
+    Y = martell,
+    !;
+	X = unknown_mother1_sand,
+    Y = martell,
+    !;
+	X = unknown_mother2_sand,
+    Y = martell,
+    !;
+	X = unknown_mother3_sand,
+    Y = martell,
+    !;
+    X = unknown_mother_greyjoy,
+    Y = greyjoy,
+    !;
+    X = unknown_father_greyjoy,
+    Y = greyjoy,
+    !;
+    X = unknown_mother_lannister,
+    Y = lannister,
+    !;
+	X = gendry,
+    Y = baratheon,
+    !;
 	atom_string(X, String_X),
 	house_lastname(String_X, Name, Lastname),
 	string_to_atom(Lastname, Y).
@@ -550,6 +590,44 @@ house_lastname(String, Name, Lastname) :-
 	!,
 	sub_atom(String, 0, Before, _, Name),
 	sub_string(String, _, After, 0, Lastname).
+
+string_to_atom(Lastname, Y) :-
+    Lastname = "stark",
+    Y = stark,
+    !;
+    Lastname = "snow",
+    Y = stark,
+    !;
+    Lastname = "tyrell",
+    Y = tyrell,
+    !;
+    Lastname = "hightower",
+    Y = tyrell,
+    !;
+    Lastname = "targaryen",
+    Y = targaryen,
+    !;
+    Lastname = "martell",
+    Y = martell,
+    !;
+    Lastname = "sand",
+    Y = martell,
+    !;
+    Lastname = "greyjoy",
+    Y = greyjoy,
+    !;
+    Lastname = "harlaw",
+    Y = greyjoy,
+    !;
+    Lastname = "lannister",
+    Y = lannister,
+    !;
+    Lastname = "baratheon",
+    Y = baratheon,
+    !;
+    Lastname = "estermont",
+    Y = baratheon,
+    !.
 
 %____________________________________________________________
 % DEFINE IF X IS SINGLE OR NOT
@@ -571,3 +649,7 @@ list_house(X, Y) :- setof(S, select_house(X, S), W), Y=W.
 
 %IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
 power_of(X, Y) :- setof(S, select_house(X, S), W), Z=W, length(Z, Y).
+
+
+% consult("GotCheck.pl").
+% house_of(alerie_hightower, Y).
