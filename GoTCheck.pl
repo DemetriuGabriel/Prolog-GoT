@@ -474,7 +474,6 @@ ancestor(X, Y) :-								% Looping
 ancestors(X, Ancestor_of) :-
 	findall(A, ancestor(X, A), Ancestor_of).	% Returns a list of all results for ancestor(X,Y).
 
-
 %____________________________________________________________
 % FIND DESCENDANTS
 
@@ -483,7 +482,6 @@ descendant(X, Y) :-
 
 descendants(X, Descendant_of) :-
 	findall(A, descendant(X, A), Descendant_of).
-
 
 %____________________________________________________________
 % ARYAS LIST 
@@ -664,16 +662,21 @@ is_single(X) :-									% X is single if X is not Y's parent
 
 list_relationship(Y, All) :-			% Lista dos relationship and ancestors de Y
 	setof(X, (ancestors(Y, X); sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
-	write(All).
+	length(All, Z),
+	write(All),
+	write(Z).
+
+remove_duplicates(Y, Z) :-
+	list_relationship(Y, All),
+	write(All),
+	sort(All, New_list),
+	length(New_list, Z),
+	write(New_List).
 
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	list_relationship(Y, All),
-	sort(All, New_list),
-	length(New_list, Z),
-	write(New_List),
-	write(Z).
+	remove_duplicates(Y, Z).
 
 	% sum_list([S1,S2], Z).
 
