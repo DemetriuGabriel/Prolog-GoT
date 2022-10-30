@@ -661,10 +661,7 @@ is_single(X) :-									% X is single if X is not Y's parent
 % MARRIAGE POWER
 
 list_relationship(Y, All) :-			% Lista dos relationship and ancestors de Y
-	setof(X, (ancestors(Y, X); sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
-	length(All, Z),
-	write(All),
-	write(Z).
+	setof(X, (ancestors(Y, X); sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All).
 
 remove_duplicates(Y, Z) :-
 	list_relationship(Y, All),
@@ -676,11 +673,7 @@ remove_duplicates(Y, Z) :-
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	list_relationship(Y, All),
-	sort(All, New_list),
-	length(New_list, Z),
-	write(New_List),
-	write(Z).
+	list_relationship(Y, All).
 
 	% sum_list([S1,S2], Z).
 
