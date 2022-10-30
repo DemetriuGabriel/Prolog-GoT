@@ -662,16 +662,19 @@ is_single(X) :-									% X is single if X is not Y's parent
 %____________________________________________________________
 % MARRIAGE POWER
 
+list_relationship(Y, All) :-			% Lista dos relationship and ancestors de Y
+	setof(X, (ancestors(Y, X); sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
+	write(All).
+
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	descendants(X, W1), ancestors(X, N1),
-	descendants(Y, W2), ancestors(Y, N2),
-	length(W1, S1), length(N1, S2), length(W2, S3), length(N2, S4),
-	sum_list([S1,S2,S3,S4], Z).
-	
-	% house_of(X, W1), house_of(Y, W2),
-	% power_of(W1, N1), power_of(W2, N2),
-	% sum_list([N1,N2], Z).
+	list_relationship(Y, All),
+	sort(All, New_list),
+	length(New_list, Z),
+	write(New_List),
+	write(Z).
+
+	% sum_list([S1,S2], Z).
 
 % consult("GotCheck.pl").
