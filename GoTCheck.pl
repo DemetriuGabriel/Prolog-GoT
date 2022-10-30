@@ -676,7 +676,11 @@ remove_duplicates(Y, Z) :-
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	remove_duplicates(Y, Z).
+	list_relationship(Y, All),
+	sort(All, New_list),
+	length(New_list, Z),
+	write(New_List),
+	write(Z).
 
 	% sum_list([S1,S2], Z).
 
