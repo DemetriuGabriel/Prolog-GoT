@@ -540,7 +540,7 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 %_____________________________________________________________
 % HOUSES
 
-house_of(X, Y) :-
+return_house_lastname(X, Y) :-
 	% Exceptions
 	X = unknown_mother_stark,
     Y = stark,
@@ -584,6 +584,14 @@ house_of(X, Y) :-
 	atom_string(X, String_X),
 	house_lastname(String_X, Name, Lastname),
 	string_to_atom(Lastname, Y).
+	
+house_of(X, Y) :-
+	X = four_unknown_martells,
+    	Y = martell;
+    	return_house_lastname(X, B),
+    	list_house(B, Z),
+    	member(X, Z),
+    	Y = B.
 	
 house_lastname(String, Name, Lastname) :-
 	sub_string(String, Before, _, After, "_"),
@@ -632,14 +640,13 @@ string_to_atom(Lastname, Y) :-
 % POWER OF HOUSE
 
 select_house(X, Y) :- 
-	((female(B);male(B)), house_of(B, Z)), 			% All characters considering the unknowns
+	((female(B);male(B)), return_house_lastname(B, Z)), 			% All characters considering the unknowns
 	Z == X,
 	Y = B.
 
 list_house(House, Y) :- 
 	setof(S, select_house(House, S), W), 			% Returns the list of each house
-	Y = W,
-	write(W).
+	Y = W.
 
 power_of(X, Y) :- 
 	setof(S, select_house(X, S), W),  				%IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
