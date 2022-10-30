@@ -628,6 +628,23 @@ string_to_atom(Lastname, Y) :-
     Lastname = "estermont",
     Y = baratheon,
     !.
+%____________________________________________________________
+% POWER OF HOUSE
+
+select_house(X, Y) :- 
+	((female(B);male(B)), house_of(B, Z)), 			% All characters considering the unknowns
+	Z == X,
+	Y = B.
+
+list_house(House, Y) :- 
+	setof(S, select_house(House, S), W), 			% Returns the list of each house
+	Y = W,
+	write(W).
+
+power_of(X, Y) :- 
+	setof(S, select_house(X, S), W),  				%IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
+	Z = W, 
+	length(Z, Y).
 
 %____________________________________________________________
 % DEFINE IF X IS SINGLE OR NOT
@@ -636,20 +653,5 @@ is_single(X) :-									% X is single if X is not Y's parent
    not(parent(X, Y)).
    
 %____________________________________________________________
-% CHARACTERS
-
-select_house(X, Y) :- (status(B, _), house_of(B, Z)), Z == X,
-	Y = B.
-
-%retorna a lista de cada house 
-list_house(X, Y) :- setof(S, select_house(X, S), W), Y=W.
-
-%_____________________________________________________________
-% POWER OF HOUSE
-
-%IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
-power_of(X, Y) :- setof(S, select_house(X, S), W), Z=W, length(Z, Y).
-
 
 % consult("GotCheck.pl").
-% house_of(alerie_hightower, Y).
