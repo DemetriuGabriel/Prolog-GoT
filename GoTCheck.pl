@@ -665,8 +665,13 @@ is_single(X) :-									% X is single if X is not Y's parent
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	house_of(X, W1), house_of(Y, W2),
-	power_of(W1, N1), power_of(W2, N2),
-	sum_list([N1,N2], Z).
+	descendants(X, W1), ancestors(X, N1),
+	descendants(Y, W2), ancestors(Y, N2),
+	length(W1, S1), length(N1, S2), length(W2, S3), length(N2, S4),
+	sum_list([S1,S2,S3,S4], Z).
+	
+	% house_of(X, W1), house_of(Y, W2),
+	% power_of(W1, N1), power_of(W2, N2),
+	% sum_list([N1,N2], Z).
 
 % consult("GotCheck.pl").
