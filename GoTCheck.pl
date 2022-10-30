@@ -658,7 +658,15 @@ power_of(X, Y) :-
 
 is_single(X) :-									% X is single if X is not Y's parent
    not(parent(X, Y)).
-   
+
 %____________________________________________________________
+% MARRIAGE POWER
+
+marriage_power(X, Y, Z) :-
+	(is_single(X), is_single(Y)),
+	((female(X), male(Y));(female(Y), male(X))),
+	house_of(X, W1), house_of(Y, W2),
+	power_of(W1, N1), power_of(W2, N2),
+	sum_list([N1,N2], Z).
 
 % consult("GotCheck.pl").
