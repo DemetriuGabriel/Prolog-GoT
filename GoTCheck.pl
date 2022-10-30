@@ -672,7 +672,7 @@ marriage_power(X, Y, Z) :-
 	list_relationship(Y, All),
 	sort(All, New_list),
 	length(New_list, Z),
-	write(New_List),
+	write(New_list),
 	write(Z).
 
 	% sum_list([S1,S2], Z).
