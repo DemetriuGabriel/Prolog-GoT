@@ -666,10 +666,12 @@ list_relationship(Y, Z) :-			% Lista dos relationship and ancestors de Y
 	append(K, All, List),
 	length(List, Z).
 
-% remove_duplicates(Y, Z) :-
-% 	list_relationship(Y, All),
-% 	sort(All, New_list),
-% 	length(New_list, Z).
+remove_duplicates(Y, Z) :-
+	list_relationship(Y, All),
+	sort(All, New_list),
+	length(New_list, Z).
+
+% Falta resolver: desde que não sejam do mesmo clã de X (porque aí já seriam aliados).
 
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
@@ -678,3 +680,7 @@ marriage_power(X, Y, Z) :-
 	sum_list([K,1], Z). 					% O +1 é contando com Y
 
 % consult("GotCheck.pl").
+
+% [lyanna_stark,rhaegar_targaryen,rickard_stark,unknown_mother_stark,aegon_V_targaryen,aegon_V_targaryen,unknown_mother_targaryen,
+% unknown_mother_targaryen,aerys_targaryen,rhaella_targaryen, aegon_targaryen,benjen_stark,brandon_stark,daenerys_targaryen,eddard_stark,
+% rhaenys_targaryen,viserys_targaryen]
