@@ -645,7 +645,7 @@ select_house(X, Y) :-
 	Y = B.
 
 power_of(X, Y) :- 
-	setof(S, select_house(X, S), W),  				% Returns the power of houses by the number of individuals in it
+	setof(S, select_house(X, S), W), 									% Returns the power of houses by the number of individuals in it
 	length(W, Y).
 
 %____________________________________________________________
@@ -668,7 +668,7 @@ remove_duplicates(Y, Z) :-						% Remove repeated characters in the list
 	length(New_list, Z).
 
 different_cla(X, Y) :-							% If X and Y are from the same clan, returns false
-	return_house_lastname(X, A), return_house_lastname(Y, B),
+	house_of(X, A), house_of(Y, B),
 	A \= B.
 
 marriage_power(X, Y, Z) :-						% Amount of allies X will gain if he marries Y
@@ -692,13 +692,13 @@ betray(jaime_lannister, cersei_lannister).
 love(khal_drogo, daenerys_targaryen).
 love(dario_naharis, daenerys_targaryen).
 love(jorah_mormont, daenerys_targaryen).
-love(cersei_lannister, jamie_lannister).
 love(hizdahr_zo_loraq, daenerys_targaryen).
 love(jon_snow, daenerys_targaryen).
 love(daenerys_targaryen, khal_drogo).
 love(daenerys_targaryen, hizdahr_zo_loraq).
 love(daenerys_targaryen, dario_naharis).
 love(daenerys_targaryen, jon_snow).
+love(cersei_lannister, jamie_lannister).
 love(jamie_lannister, cersei_lannister).
 
 % Some murders
