@@ -660,27 +660,22 @@ is_single(X) :-									% X is single if X is not Y's parent
 %____________________________________________________________
 % MARRIAGE POWER
 
-list_relationship(Y, Z) :-			% Lista dos relationship and ancestors de Y
+list_relationship(Y, List) :-			% Lista dos relationship and ancestors de Y
 	ancestors(Y, K),
 	setof(X, (sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
-	append(K, All, List),
-	length(List, Z).
+	append(K, All, List).
 
 remove_duplicates(Y, Z) :-
-	list_relationship(Y, All),
-	sort(All, New_list),
+	list_relationship(Y, List),
+	sort(List, New_list),
 	length(New_list, Z).
-
-% Falta resolver: desde que não sejam do mesmo clã de X (porque aí já seriam aliados).
 
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	list_relationship(Y, K),
+	remove_duplicates(Y, K),
 	sum_list([K,1], Z). 					% O +1 é contando com Y
 
-% consult("GotCheck.pl").
+% Obs.: Por algum motivo quando Y = Snow, imprime Z = 16 e false (ajeitar)
 
-% [lyanna_stark,rhaegar_targaryen,rickard_stark,unknown_mother_stark,aegon_V_targaryen,aegon_V_targaryen,unknown_mother_targaryen,
-% unknown_mother_targaryen,aerys_targaryen,rhaella_targaryen, aegon_targaryen,benjen_stark,brandon_stark,daenerys_targaryen,eddard_stark,
-% rhaenys_targaryen,viserys_targaryen]
+% consult("GotCheck.pl").
