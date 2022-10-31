@@ -1,4 +1,10 @@
-%-------------------------GoT Check-------------------------
+%---------------------------Grupo---------------------------%
+
+% José Luiz (jlsn)
+% Demetriu Gabriel (dgas)
+% Luana Brito (lccb)
+
+%-------------------------GoT Check-------------------------%
 % Accurate as of end of season 7 (excluding events in the books)
 
 % Includes all major houses in game of thrones, their family trees, gender and status.
@@ -538,6 +544,53 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 %_____________________________________________________________
 % HOUSES
 
+get_lastname(String, Name, Lastname) :-
+	sub_string(String, Before, _, After, "_"),
+	!,
+	sub_atom(String, 0, Before, _, Name),
+	sub_string(String, _, After, 0, Lastname).
+
+house_by_lastname(Lastname, Y) :-
+    Lastname = "stark",
+    Y = stark,
+    !;
+    Lastname = "snow",
+    Y = stark,
+    !;
+    Lastname = "tyrell",
+    Y = tyrell,
+    !;
+    Lastname = "hightower",
+    Y = tyrell,
+    !;
+    Lastname = "targaryen",
+    Y = targaryen,
+    !;
+	Lastname = "snow",
+    Y = targaryen,
+    !;
+    Lastname = "martell",
+    Y = martell,
+    !;
+    Lastname = "sand",
+    Y = martell,
+    !;
+    Lastname = "greyjoy",
+    Y = greyjoy,
+    !;
+    Lastname = "harlaw",
+    Y = greyjoy,
+    !;
+    Lastname = "lannister",
+    Y = lannister,
+    !;
+    Lastname = "baratheon",
+    Y = baratheon,
+    !;
+    Lastname = "estermont",
+    Y = baratheon,
+    !.
+
 house_of(X, Y) :-								% Y = house to which X belongs
 	% Exceptions
 	X = unknown_mother_stark,
@@ -580,55 +633,9 @@ house_of(X, Y) :-								% Y = house to which X belongs
     Y = baratheon,
     !;
 	atom_string(X, String_X),
-	house_lastname(String_X, Name, Lastname),
-	string_to_atom(Lastname, Y).
+	get_lastname(String_X, Name, Lastname),
+	house_by_lastname(Lastname, Y).
 	
-house_lastname(String, Name, Lastname) :-
-	sub_string(String, Before, _, After, "_"),
-	!,
-	sub_atom(String, 0, Before, _, Name),
-	sub_string(String, _, After, 0, Lastname).
-
-string_to_atom(Lastname, Y) :-
-    Lastname = "stark",
-    Y = stark,
-    !;
-    Lastname = "snow",
-    Y = stark,
-    !;
-    Lastname = "tyrell",
-    Y = tyrell,
-    !;
-    Lastname = "hightower",
-    Y = tyrell,
-    !;
-    Lastname = "targaryen",
-    Y = targaryen,
-    !;
-	Lastname = "snow",
-    Y = targaryen,
-    !;
-    Lastname = "martell",
-    Y = martell,
-    !;
-    Lastname = "sand",
-    Y = martell,
-    !;
-    Lastname = "greyjoy",
-    Y = greyjoy,
-    !;
-    Lastname = "harlaw",
-    Y = greyjoy,
-    !;
-    Lastname = "lannister",
-    Y = lannister,
-    !;
-    Lastname = "baratheon",
-    Y = baratheon,
-    !;
-    Lastname = "estermont",
-    Y = baratheon,
-    !.
 %____________________________________________________________
 % POWER OF HOUSE
 
@@ -670,3 +677,44 @@ marriage_power(X, Y, Z) :-						% Amount of allies X will gain if he marries Y
 	different_cla(X, Y),
 	remove_duplicates(Y, K),
 	sum_list([K,1], Z). 					% The +1 is counting on the Y character
+
+%____________________________________________________________
+% Some betrayals that happened ; X = traitor, Y =  betrayed
+betray(varys, daenerys_targaryen).
+betray(tyrion_lannister, daenerys_targaryen).
+betray(jon_snow, daenerys_targaryen).
+betray(viserys_targaryen, daenerys_targaryen).
+betray(witch, daenerys_targaryen).
+betray(cersei_lannister, jaime_lannister).
+betray(jaime_lannister, cersei_lannister).
+
+% Some love stories between characters;
+love(khal_drogo, daenerys_targaryen).
+love(dario_naharis, daenerys_targaryen).
+love(jorah_mormont, daenerys_targaryen).
+love(cersei_lannister, jamie_lannister).
+love(hizdahr_zo_loraq, daenerys_targaryen).
+love(jon_snow, daenerys_targaryen).
+love(daenerys_targaryen, khal_drogo).
+love(daenerys_targaryen, hizdahr_zo_loraq).
+love(daenerys_targaryen, dario_naharis).
+love(daenerys_targaryen, jon_snow).
+love(jamie_lannister, cersei_lannister).
+
+% Some murders
+kill(jon_snow, daenerys_targaryen).
+kill(daenerys_targaryen, varys).
+kill(jaime_lannister, robert_baratheon).
+kill(euron_greyjoy, drogon).
+kill(night_king, viserion).
+kill(arya_stark, night_king).
+kill(drogon, varys).
+
+who_betrayed_who(Traitor, Betrayed) :- 		% Returns who has betrayed or been betrayed by characters, returns false if the character is not in the "betray" database.
+    betray(Traitor, Betrayed). 
+
+who_loved_who(Loved, Y) :-					% Returns who loved or was loved, returns false if the character does not exist in the "love" database.
+    love(Loved, Y).
+
+who_killed_who(Killer, Killed) :-			% returns who murdered or was murdered, returns false if the character does not exist in the "kill" database.
+    kill(Killer, Killed).
