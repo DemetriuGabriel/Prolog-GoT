@@ -583,13 +583,13 @@ return_house_lastname(X, Y) :-
 	house_lastname(String_X, Name, Lastname),
 	string_to_atom(Lastname, Y).
 	
-house_of(X, Y) :-
+house_of(X, Y) :-							% Y = house to which X belongs
 	X = four_unknown_martells,
-    	Y = martell;
-    	return_house_lastname(X, B),
-    	list_house(B, Z),
-    	member(X, Z),
-    	Y = B.
+	Y = martell;
+	return_house_lastname(X, B),
+	list_house(B, Z),
+	member(X, Z),
+	Y = B.
 	
 house_lastname(String, Name, Lastname) :-
 	sub_string(String, Before, _, After, "_"),
@@ -647,7 +647,7 @@ list_house(House, Y) :-
 	Y = W.
 
 power_of(X, Y) :- 
-	setof(S, select_house(X, S), W),  				%IT RETURNS THE POWER OF THE HOUSES BY THE AMOUNT OF INDIVIDUALS IN IT.
+	setof(S, select_house(X, S), W),  				% Returns the power of houses by the number of individuals in it
 	Z = W, 
 	length(Z, Y).
 
@@ -660,25 +660,23 @@ is_single(X) :-									% X is single if X is not Y's parent
 %____________________________________________________________
 % MARRIAGE POWER
 
-list_relationship(Y, List) :-			% Lista dos relationship and ancestors de Y
+list_relationship(Y, List) :-					% List of Y's relationships and ancestors
 	ancestors(Y, K),
 	setof(X, (sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
 	append(K, All, List).
 
-remove_duplicates(Y, Z) :-
+remove_duplicates(Y, Z) :-						% Remove repeated characters in the list
 	list_relationship(Y, List),
 	sort(List, New_list),
 	length(New_list, Z).
 
-different_cla(X, Y) :-
+different_cla(X, Y) :-							% If X and Y are from the same clan, returns false
 	return_house_lastname(X, A), return_house_lastname(Y, B),
 	A \= B.
 
-marriage_power(X, Y, Z) :-
+marriage_power(X, Y, Z) :-						% Amount of allies X will gain if he marries Y
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y)), !; (female(Y), male(X))),
 	different_cla(X, Y),
 	remove_duplicates(Y, K),
-	sum_list([K,1], Z). 					% O +1 é contando com Y
-
-% consult("GotCheck.pl").
+	sum_list([K,1], Z). 					% The +1 is counting on the Y character
