@@ -472,7 +472,7 @@ ancestor(X, Y) :-								% Looping
 	ancestor(Z, Y).
 
 ancestors(X, Ancestor_of) :-
-	findall(A, ancestor(X, A), Ancestor_of).	% Returns a list of all results for ancestor(X,Y).
+	findall(A, ancestor(A, X), Ancestor_of).	% Returns a list of all results for ancestor(X,Y).
 
 %____________________________________________________________
 % FIND DESCENDANTS
@@ -660,21 +660,21 @@ is_single(X) :-									% X is single if X is not Y's parent
 %____________________________________________________________
 % MARRIAGE POWER
 
-list_relationship(Y, All) :-			% Lista dos relationship and ancestors de Y
-	setof(X, (ancestors(Y, X); sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All).
+list_relationship(Y, Z) :-			% Lista dos relationship and ancestors de Y
+	ancestors(Y, K),
+	setof(X, (sister(Y, X); brother(Y, X); aunt(Y, X); uncle(Y, X); neice(Y, X); nephew(Y, X)), All),
+	append(K, All, List),
+	length(List, Z).
 
-remove_duplicates(Y, Z) :-
-	list_relationship(Y, All),
-	write(All),
-	sort(All, New_list),
-	length(New_list, Z),
-	write(New_List).
+% remove_duplicates(Y, Z) :-
+% 	list_relationship(Y, All),
+% 	sort(All, New_list),
+% 	length(New_list, Z).
 
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
-	list_relationship(Y, All).
-
-	% sum_list([S1,S2], Z).
+	list_relationship(Y, K),
+	sum_list([K,1], Z). 					% O +1 é contando com Y
 
 % consult("GotCheck.pl").
