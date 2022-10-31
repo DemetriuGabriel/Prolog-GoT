@@ -538,7 +538,7 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 %_____________________________________________________________
 % HOUSES
 
-return_house_lastname(X, Y) :-
+house_of(X, Y) :-								% Y = house to which X belongs
 	% Exceptions
 	X = unknown_mother_stark,
     Y = stark,
@@ -583,14 +583,6 @@ return_house_lastname(X, Y) :-
 	house_lastname(String_X, Name, Lastname),
 	string_to_atom(Lastname, Y).
 	
-house_of(X, Y) :-							% Y = house to which X belongs
-	X = four_unknown_martells,
-	Y = martell;
-	return_house_lastname(X, B),
-	list_house(B, Z),
-	member(X, Z),
-	Y = B.
-	
 house_lastname(String, Name, Lastname) :-
 	sub_string(String, Before, _, After, "_"),
 	!,
@@ -611,6 +603,9 @@ string_to_atom(Lastname, Y) :-
     Y = tyrell,
     !;
     Lastname = "targaryen",
+    Y = targaryen,
+    !;
+	Lastname = "snow",
     Y = targaryen,
     !;
     Lastname = "martell",
@@ -637,19 +632,14 @@ string_to_atom(Lastname, Y) :-
 %____________________________________________________________
 % POWER OF HOUSE
 
-select_house(X, Y) :- 
-	((female(B);male(B)), return_house_lastname(B, Z)), 			% All characters considering the unknowns
+select_house(X, Y) :-
+	((female(B);male(B)), house_of(B, Z)), 			% All characters considering the unknowns
 	Z == X,
 	Y = B.
 
-list_house(House, Y) :- 
-	setof(S, select_house(House, S), W), 			% Returns the list of each house
-	Y = W.
-
 power_of(X, Y) :- 
 	setof(S, select_house(X, S), W),  				% Returns the power of houses by the number of individuals in it
-	Z = W, 
-	length(Z, Y).
+	length(W, Y).
 
 %____________________________________________________________
 % DEFINE IF X IS SINGLE OR NOT
