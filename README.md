@@ -1,5 +1,5 @@
 # :crossed_swords: GoT Check
-## Game of Thrones character database and family trees in Prolog
+## ⚔️ Projeto de implementação, da disciplina de Lógica para Computação do CIN/UFPE, tendo como base o banco de dados de personagens de Game of Thrones e árvores genealógicas, utilizando a linguagem de programação Prolog.
 ### [Article explaining this repo can be found here](https://medium.freecodecamp.org/how-to-learn-prolog-by-watching-game-of-thrones-4852ea960017)
 #### :warning:**ACCURATE UP TO THE END OF SEASON 7 - FULL OF SPOILERS!**:skull:
 #### Run using SWI-Prolog or similar. 
