@@ -670,14 +670,15 @@ remove_duplicates(Y, Z) :-
 	sort(List, New_list),
 	length(New_list, Z).
 
+different_cla(X, Y) :-
+	return_house_lastname(X, A), return_house_lastname(Y, B),
+	A \= B.
+
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
-	((female(X), male(Y));(female(Y), male(X))),
-	return_house_lastname(X, A), return_house_lastname(Y, B),
-	A \= B,
+	((female(X), male(Y)), !; (female(Y), male(X))),
+	different_cla(X, Y),
 	remove_duplicates(Y, K),
 	sum_list([K,1], Z). 					% O +1 é contando com Y
-
-% Obs.: Por algum motivo quando Y = Snow, imprime Z = 16 e false (ajeitar)
 
 % consult("GotCheck.pl").
