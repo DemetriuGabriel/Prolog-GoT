@@ -542,7 +542,7 @@ rightful_heir(X) :-								% Inarguable, faultess logic.
 	status(X, alive).
 
 %_____________________________________________________________
-% HOUSES
+% TAREFA 2: HOUSES
 
 get_lastname(String, Name, Lastname) :-
 	sub_string(String, Before, _, After, "_"),
@@ -637,7 +637,7 @@ house_of(X, Y) :-								% Y = house to which X belongs
 	house_by_lastname(Lastname, Y).
 	
 %____________________________________________________________
-% POWER OF HOUSE
+% TAREFA 3: POWER OF HOUSE
 
 select_house(X, Y) :-
 	((female(B);male(B)), house_of(B, Z)), 			% All characters considering the unknowns
@@ -649,13 +649,13 @@ power_of(X, Y) :-
 	length(W, Y).
 
 %____________________________________________________________
-% DEFINE IF X IS SINGLE OR NOT
+% TAREFA 4: DEFINE IF X IS SINGLE OR NOT
 
 is_single(X) :-									% X is single if X is not Y's parent
    not(parent(X, Y)).
 
 %____________________________________________________________
-% MARRIAGE POWER
+% TAREFA 5: MARRIAGE POWER
 
 list_relationship(Y, List) :-					% List of Y's relationships and ancestors
 	ancestors(Y, K),
@@ -679,6 +679,8 @@ marriage_power(X, Y, Z) :-						% Amount of allies X will gain if he marries Y
 	sum_list([K,1], Z). 					% The +1 is counting on the Y character
 
 %____________________________________________________________
+% EXTRAS
+
 % Some betrayals that happened ; X = traitor, Y =  betrayed
 betray(varys, daenerys_targaryen).
 betray(tyrion_lannister, daenerys_targaryen).
