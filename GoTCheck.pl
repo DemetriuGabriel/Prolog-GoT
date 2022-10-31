@@ -673,6 +673,8 @@ remove_duplicates(Y, Z) :-
 marriage_power(X, Y, Z) :-
 	(is_single(X), is_single(Y)),
 	((female(X), male(Y));(female(Y), male(X))),
+	return_house_lastname(X, A), return_house_lastname(Y, B),
+	A \= B,
 	remove_duplicates(Y, K),
 	sum_list([K,1], Z). 					% O +1 é contando com Y
 
