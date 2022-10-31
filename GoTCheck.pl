@@ -591,7 +591,7 @@ house_by_lastname(Lastname, Y) :-
     Y = baratheon,
     !.
 
-house_of(X, Y) :-								% Y = house to which X belongs
+get_house(X, Y) :-								% Y = house to which X belongs
 	% Exceptions
 	X = unknown_mother_stark,
     Y = stark,
@@ -636,11 +636,17 @@ house_of(X, Y) :-								% Y = house to which X belongs
 	get_lastname(String_X, Name, Lastname),
 	house_by_lastname(Lastname, Y).
 	
+house_of(X, Y) :- 
+	get_house(X, House),
+	setof(S, select_house(House, S), W),
+	member(X, W),
+	Y = House.
+	
 %____________________________________________________________
 % TAREFA 3: POWER OF HOUSE
 
 select_house(X, Y) :-
-	((female(B);male(B)), house_of(B, Z)), 			% All characters considering the unknowns
+	((female(B);male(B)), get_house(B, Z)), 			% All characters considering the unknowns
 	Z == X,
 	Y = B.
 
@@ -668,7 +674,7 @@ remove_duplicates(Y, Z) :-						% Remove repeated characters in the list
 	length(New_list, Z).
 
 different_cla(X, Y) :-							% If X and Y are from the same clan, returns false
-	house_of(X, A), house_of(Y, B),
+	get_house(X, A), get_house(Y, B),
 	A \= B.
 
 marriage_power(X, Y, Z) :-						% Amount of allies X will gain if he marries Y
